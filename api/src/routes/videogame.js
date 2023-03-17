@@ -33,6 +33,7 @@ router.get('/:id', async function (req, res) {
                     
                 let X = gameAPI.data;
                 const information = {
+                    id: X.id,
                     name: X.name,
                     image: X.background_image,
                     genres: X.genres && X.genres.map((p) =>

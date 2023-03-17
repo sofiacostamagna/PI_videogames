@@ -7,15 +7,14 @@ const createVideogame = require('./createVideogame')
 
 const router = Router();
 
+//Impoto los modulos del proyecto:
+router.use('/videogame', videogame);// Busco un videogame por su ID 
 
-  // Busco un videogame por su ID
-router.use('/videogame', videogame);
-  // Busco los 100 primeros videogames o ?name="nemo" busco los de ese nombre
-router.use('/videogames', videogames);
-  // Busco todos los genres
-router.use('/genres', genres); 
-  // Creo un video juego POST
-router.use('/videogame', createVideogame)
+router.use('/videogames', videogames); // Busco los 100 primeros videogames o ?name="nemo" busco los de ese nombre
+
+router.use('/genres', genres); //Busco todos los generos
+ 
+router.use('/videogames', createVideogame)//Crea un videojuego POST
 
 
 module.exports = router;

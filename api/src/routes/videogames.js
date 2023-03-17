@@ -21,7 +21,7 @@ router.get('/', async function (req, res) {
           gamesDBFull = {
               id: X.id,
               name: X.name,
-              imagen: X.image,
+              image: X.image,
               rating: X.rating,
               source: "Created",
               genres: X.genres.map(p => p.name).join(', '),
