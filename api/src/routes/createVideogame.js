@@ -8,7 +8,7 @@ const router = Router();
 
 router.post('/', async (req, res) => {
   let { 
-    name, 
+    name,
     description, 
     image,
     relDate, 
@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
     platforms 
   } = req.body;
   platforms = platforms.join(', '); // convierte un arreglo de plataformas en una cadena separada
-
+  console.log(req.body)
   try {
     const gameCreated = await Videogame.create({
       
@@ -31,29 +31,28 @@ router.post('/', async (req, res) => {
       createdInDb,
       
     })
-    const gameGenre = await Genre.findAll({
+    /*const gameGenre = await Genre.findAll({
       where: {
         name: genres
       }
-    })
-    
-    console.log(gameCreated)
-    
-    await gameCreated.addGenre(gameGenre)
+    })*/
+   
+   
+   // await gameCreated.addGenre(gameGenre)
+    res.status(200).send(gameCreated)
     
   } catch (err) {
-    console.log(err);
+    res.status(404).send(err.message)
   }
-  res.send('Created succesfully')
 });
 
 module.exports = router;
 
 //--------------------------------------LO CREE YO ----------------------------------------------------------
-/*
-const { route } = require("./videogames");
 
-router.post('/videogames', async (req,res)=>{
+/*const { route } = require("./videogames");
+
+router.post('/', async (req,res)=>{
   const { 
     name, 
     description, 
@@ -80,7 +79,8 @@ router.post('/videogames', async (req,res)=>{
   })
 
   createVideogame.addGenres(genresDb)
-  res.send('Videogame created successfully')
+  res.status(200).send('Videogame created successfully')
 });
+
 
 module.exports = router;*/

@@ -29,7 +29,7 @@ module.exports = router;
 
 //-------------------------------------------LO CREE YO-----------------------------------------------------------
 
-router.get('/genres', async (res,req)=>{
+/*router.get('/genres', async (res,req)=>{
 
     const genresApi = await axios.get(`https://api.rawg.io/api/genres?key=${API_KEY}`) //entra a la Api y me trae info
 
@@ -51,5 +51,5 @@ router.get('/genres', async (res,req)=>{
 
 
 
-module.exports = router;
+module.exports = router;*/
 

@@ -24,7 +24,7 @@ router.get('/:id', async function (req, res) {
                     image: videogame.image,
                     relDate: videogame.released,
                     rating: videogame.rating,
-                    genres: videogame.genres.map(p => p.name).join(', ')
+                    genres: videogame.genres?.map(p => p.name).join(', ')
                 }
                 return res.json(information)
         } else {
@@ -40,7 +40,7 @@ router.get('/:id', async function (req, res) {
                     description: X.description_raw,
                     relDate: X.released,
                     rating: X.rating,
-                    platforms: X.platforms && X.platforms.map((p) =>
+                    platforms: X.platforms && X.platforms?.map((p) =>
                         p.platform.name).filter(p => p != null).join(', ')
                 }
                 return res.json(information)
