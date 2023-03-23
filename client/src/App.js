@@ -1,9 +1,9 @@
 import './App.css';
-import { Route } from 'react-router-dom';
-import { BrowserRouter, Router, Switch } from 'react-router-dom';
+import { BrowserRouter, Route,  Switch } from 'react-router-dom';
 import LandingPage from './Components/LandingPage/LandingPage';
 import Home from './Components/Home/Home';
-import Paginado from './Components/Paginado/Paginado';
+import CreateVideogame from './Components/CreateVideogame/CreateVideogame';
+import DetailPage from './Components/DetailPage/DetailPage';
 
 
 
@@ -16,6 +16,8 @@ function App() {
      <Switch>
       <Route exact path= '/' component={LandingPage}/>
       <Route path='/home' component={Home}/>
+      <Route path='/videogame' component={CreateVideogame} />
+      <Route exact path='/videogames/:id' component={DetailPage} />
       
     </Switch>
     </div>

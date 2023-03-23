@@ -1,4 +1,4 @@
-import { GET_VIDEOGAMES, FILTERED_BY_GENRES, FILTERED_CREATE, ORDER_BY_NAME, GET_VIDEOGAME_BY_NAME, GET_GENRES } from '../actions/action-types'
+import { GET_VIDEOGAMES, FILTERED_BY_GENRES, FILTERED_CREATE, ORDER_BY_NAME, GET_VIDEOGAME_BY_NAME, GET_GENRES, POST_VIDEOGAME } from '../actions/action-types'
 
 const initialState = {
     videogames: [],
@@ -19,12 +19,17 @@ function rootReducer(state = initialState, action) {
             
 
         case FILTERED_BY_GENRES:
-            const allVideogames = state.allVideogames
-            const filteredGenre = action.payload === 'All'? allVideogames : allVideogames.filter((videogame) => videogame.genres?.find(v => v === action.payload));
-            return {
-                ...state,
-                videogames: filteredGenre
-            }
+           // const allVideogames = state.allVideogames
+            //const filteredGenre = action.payload === 'All'? allVideogames : allVideogames.filter((videogame) => videogame.genres?.find(v => v === action.payload));
+            //return {
+              //  ...state,
+                //videogames: filteredGenre
+           // }
+           return {
+            ...state,
+            filteredVideogames: action.payload.videogameGenre,
+            filterBy: action.payload.genre,
+          };
 
         case FILTERED_CREATE:
             const allVideogames2= state.allVideogames;
@@ -63,7 +68,7 @@ function rootReducer(state = initialState, action) {
             case GET_VIDEOGAME_BY_NAME:
                 return{
                     ...state,
-                    genres:action.payload
+                    videogames:action.payload
                 }
 
             case GET_GENRES:
@@ -71,12 +76,17 @@ function rootReducer(state = initialState, action) {
                     ...state,
                     genres: action.payload
                 }  
+            case POST_VIDEOGAME:
+                return{
+                    ...state,
+                }
 
     
         default:
             return {...state}
     }
 }
+
 
 
 export default rootReducer;

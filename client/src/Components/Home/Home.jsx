@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react'; 
 import { useDispatch, useSelector } from 'react-redux'; 
-import { getVideogames, filteredVideogamesByGenres, filteredCreate, orderByName, getGenres} from '../../redux/actions/actions';
+import { getVideogames, filteredVideogamesByGenres, filteredCreate, orderByName, orderByRating} from '../../redux/actions/actions';
 import { Link } from 'react-router-dom'
 import Card from '../Card/Card';
 import Paginado from '../Paginado/Paginado';
@@ -14,9 +14,7 @@ export default function Home()  {
 
     const dispatch = useDispatch()
     const allVideogames = useSelector((state) => state.videogames)
-    const allGenres = useSelector((state)=> state.genres)
     
-
     
 
 /*---------------------------------------PAGINADO---------------------------------------------------------------*/
@@ -34,17 +32,18 @@ export default function Home()  {
     const paginado = (pageNumber) => { //Le paso el n de pag
         setCurrentPage(pageNumber) //seteo la pag en el n de pag que pase.
     }
- /*-------------------------------------------------------------------------------------------------------------------------*/
+/*----------------------------------- FILTRADO -----------------------------------------------------------------------------*/
+   
     useEffect(() => {  
         dispatch(getVideogames());
     },[])
 
-/*----------------------------------BONTON----------------------------------------------------------------------------------*/
+   //MUESTRA TODOS LOS VIDEOGAMES:
    function handleClick(e) {
-        e.preventDefault(); //ponerlo para que no se nos recargue la página por el useEffect! 
+        e.preventDefault(); //se usa para no recargue la página por el useEffect.
         dispatch(getVideogames());
     }
-/*----------------------------------- FILTRADO -----------------------------------------------------------------------------*/
+
     // POR GENERO:
      const handleFilteredGenre=(e)=>{ 
         dispatch(filteredVideogamesByGenres(e.target.value));
@@ -60,9 +59,22 @@ export default function Home()  {
       function handleSort(e){ 
         e.preventDefault(); // creo un estado vacio local que arranca vacio
         dispatch(orderByName(e.target.value))
+
         setCurrentPage(1);
         setOrden(`Ordenado ${e.target.value}`)// aca lo seteo ordenado 
     };
+
+    //POR RATING:
+    const [orderRating, setRating]= useState('');
+    function handleRating(e){
+        e.preventDefault();
+        dispatch(orderByRating(e.target.value))
+        setCurrentPage(1);
+
+        setRating(e.target.value);
+        setOrden("Order" + e.target.value);
+    }
+        
 
     return (
         <div>
@@ -71,17 +83,26 @@ export default function Home()  {
             {/* TITULO DE LA PAGINA */}
 
             <h1>PI VIDEOGAMES</h1>
-            <button onClick={e => {handleClick(e)}}>Volver a cargar los Videogames</button>
+            <h2>Costamagna Sofia</h2>
+            <button onClick={e => {handleClick(e)}}>Load all Videogames</button>
 
             {/* FILTROS Y ORDENAMIENTO  */}            
-            <div>  
-                <select onChange={e => handleSort(e)}> {/* ordenar ascendente/descendente  */}
-                    <option value='rating'>Rating</option> 
+         
+            <div>
+            {/* FILTRO ORDEN ASC Y DESC */}
+                <select onChange={e => handleSort(e)}> 
                     <option value='asc'>A-Z</option> {/* value permite acceder al valor q tiene*/}
                     <option value='desc'>Z-A</option>
                 </select>
+            
+            {/* FILTRO POR RATING */}
+                <select onChange={e => handleRating(e)}>
+                    <option value='asc'>Rating Ascending</option>
+                    <option value='desc'>Rating Descending</option>
+                </select>
 
-                <select onChange={event => handleFilteredGenre(event)}> {/* filtrar por género  */}
+            {/* FILTRO POR GENERO */ }
+                <select onChange={event => handleFilteredGenre(event)}> 
                     <option value='All'>All Genres</option>
                     <option value='Action'>Action</option>
                     <option value='Indie'>Indie</option>
@@ -103,7 +124,8 @@ export default function Home()  {
                     <option value='Educational'>Educational</option>
                     <option value='Card'>Card</option>                    
                 </select>
-                {/*<select onChange={e => handleFilteredGenre(e)}> {/* filtrar por género  */}
+                {/* OTRO OPCION NOSE SI FUNCIONA 
+                <select onChange={e => handleFilteredGenre(e)}> {/* filtrar por género  */}
                     {/*<option value='All' key='unique1'>All</option>
                     {allGenres.map((el) => {
                         return (
@@ -111,15 +133,16 @@ export default function Home()  {
                         )
                     })}                   
                 </select> */} 
-
-                <select onChange={e => handleFilteredCreate(e)}> {/* filtrar por origen: api o bbd  */}
+            
+            {/* FILTRO POR ORIGEN API O DB */}
+                <select onChange={e => handleFilteredCreate(e)}>
                     <option value='All'>All</option>
                     <option value='DB'>DB Games</option>
                     <option value='Api'>API Games</option>
                 </select>  
 
 
-                {/* RENDERIZACION PAGINADO */}
+            {/* RENDERIZACION PAGINADO */}
                 <Paginado 
                 videogamesPerPage = {videogamesPerPage}
                 allVideogames = {allVideogames.length}
@@ -127,26 +150,23 @@ export default function Home()  {
                 />        
 
 
-
+          </div>
+        
+        {/* RENDERIZACION SEARCHBAR */}
             <SearchBar />
         
-         {/* RENDERIZADO DE LA CARD  */} 
          
-         { 
-            currentVideogames?.map ((c, index) => {
+          {/* RENDERIZADO DE LA CARD  */} 
+          {
+          
+            currentVideogames?.map ((element) => {
                 return (
-                    <li key = {index} >
-                    <Link to={'/videogame/' + c.id}>
-                    <Card name={c.name} image = {c.image} genres= {c.genres} key ={c.id}/>
-                    </Link>
-                    </li>
-                    )
-                    
-                })
-            } 
-        </div>
+                    <Card name={element.name} image = {element.image} genres= {element.genres} key ={element.id} id = {element.id}/>
+                )
+               
+            })
+        }
 
     </div>
     )
 }
-
