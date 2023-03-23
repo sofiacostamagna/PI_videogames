@@ -1,13 +1,12 @@
 const { DataTypes } = require('sequelize');
-// Exportamos una funcion que define el modelo
-// Luego le injectamos la conexion a sequelize.
+
 module.exports = (sequelize) => {
-  // defino el modelo
+
   sequelize.define('videogame', {
     id:{
-      type: DataTypes.UUID,  // para generar un id unico y especifico que no se repite, aleatorio
+      type: DataTypes.UUID,  // para generar un id unico y especifico que no se repite, aleatorio->para no pisarse con los de la API
       defaultValue: DataTypes.UUIDV4,
-      allowNull: false, //no permite que este vacio
+      allowNull: false, //no permite que este vacio->campo requerido
       primaryKey: true,
 
     },
@@ -21,7 +20,7 @@ module.exports = (sequelize) => {
 
     },
     platforms:{
-      type: DataTypes.STRING,
+      type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: false,
     },
     image: {
@@ -32,14 +31,14 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
     },
     rating:{
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL,
     },
     createInDb:{ 
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: true
     },
-    //nos muestra lo que nosotros pedimos no todos
+    //Sirve por si queremos acceder al personaje q solo creamos en la DB.
   },
   {timestamps:false});
 };

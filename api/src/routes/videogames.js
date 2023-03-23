@@ -92,3 +92,74 @@ router.get('/', async function (req, res) {
 
 module.exports = router;
 
+
+//-----------------------------------LO CREE YO----------------------------------------------
+/*
+//TRAIGO INFO DE LA API
+const getApiInfo = async()=>{
+  const apiUrl = await axios.get(`https://api.rawg.io/api/games?search=${name}&key=${API_KEY}&page_size=15`)
+  // aca tambien hago los personajes por pagina
+  apiInfo= await apiUrl.data.results.map(el => {
+    return{
+          id: el.id,
+          name: el.name,
+          image: el.image,
+          rating: el.rating.toFixed(2),  // convierte a decimal un numero
+          genres: el.genres?.map(g => g.name),
+          platforms: el.platforms?.map(p=>p.platform.name),
+          released: el.released
+      
+    };
+  });
+  return apiInfo;
+};
+
+//TRAIGO INFO DE LA DB
+const getDbInfo = async ()=> {
+  return await Videogame.findAll({ //aca pido que me traigo todos los VG
+    include:{ // pero que me incluya el modelo genre
+      model: Genre,
+      attributes: ['name'], //de este modelo, traeme el atributo name
+      through: {// este es una comprobacion que se hace cuando deseo traerme un atributo-> VA SIEMPRE
+        attributes: [],
+      }
+    }
+
+  })
+}
+
+//CONCANTENO LAS DOS FUNCIONES-> DB Y API
+const getAllVideogames= async ()=>{
+  const apiInfo= await getApiInfo();
+  const dbInfo= await getDbInfo();
+  //CONCATENO LAS DOS FUNCIONES
+  const infoTotal = apiInfo.concat(dbInfo);
+  return infoTotal
+}
+
+
+//RUTA DEL GET y ?NAME:
+router.get('/videogames', async (req, res)=>{
+
+  const name = req.query.name // QUERY-> respecto a lo q escribo en la URL(name)//Buscamos si hay un name por query 
+
+  let videogamesTotal = await getAllVideogames();
+
+  if (name){//si hay un query
+    let videogameName =  await videogamesTotal.filter(el => el.name.tolowerCase().includes(name.toLocaleLowerCase()))//fijate si en el total incluye el nombre q me pasaron por query
+    // tolowerCase pasa todos los name a minusculas
+    
+    videogameName.length ?
+    res.status(200).send(videogameName) :
+    res.status(404).send('Game not found')
+  
+  } else {// si no hay un query
+    res.status(200).send(videogamesTotal)
+
+  }
+
+})
+
+module.exports = router;*/
+
+

@@ -3,13 +3,12 @@ const { Router } = require('express');
 const axios = require('axios');
 const { API_KEY } = process.env;
 const { Videogame, Genre } = require('../db.js')
-
 const router = Router();
 
 
 // Obtengo el detalle de un videogame en particular por ID
 router.get('/:id', async function (req, res) {
-    const { id } = req.params;
+    const { id } = req.params; // es lo mismo hacer  const id = req.params.id;
 
     try { 
         if (id.includes("-")) {
@@ -51,5 +50,8 @@ router.get('/:id', async function (req, res) {
     }
 })
 
-module.exports = router
+
+module.exports = router;
+
+
 
