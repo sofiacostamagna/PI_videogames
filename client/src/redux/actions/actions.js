@@ -81,7 +81,7 @@ export function getVideogameByName(name){
 //ACTION QUE TRAE EL ARRAY DE GENEROS 
 export function getGenres() {  
   return async function (dispatch){
-      let info = await axios.get("http://localhost:3001/genres", {
+      let info = await axios.get(`http://localhost:3001/genres`, {
       })
       return dispatch({
           type: GET_GENRES,
@@ -93,16 +93,16 @@ export function getGenres() {
   //ACTION POST- CREA VIDEOGAMES
   export function postVideogame (payload) {
     return async function(dispatch){
-      let response= await axios.post("http://localhost:3001/videogames", payload);
+      let response= await axios.post(`http://localhost:3001/videogames`, payload);
        return response;
     }
   }
 
-  //ACTION QUE MUESTRA LOS DETLLES EN LAS CARTAS
+  //ACTION QUE MUESTRA LOS DETALLES EN LAS CARTAS
   export function getDetailPage(payload){
     return async function(dispatch){
       try{
-        let json = await axios.get(`http://localhost:3001/videogames/${payload}`);
+        let json = await axios.get(`http://localhost:3001/videogame/${payload}`);
         return dispatch({
           type: GET_DETAIL_PAGE ,
           payload: json.data

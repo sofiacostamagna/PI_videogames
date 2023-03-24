@@ -1,4 +1,4 @@
-import { GET_VIDEOGAMES, FILTERED_BY_GENRES, FILTERED_CREATE, ORDER_BY_NAME, GET_VIDEOGAME_BY_NAME, GET_GENRES, POST_VIDEOGAME } from '../actions/action-types'
+import { GET_VIDEOGAMES, FILTERED_BY_GENRES, FILTERED_CREATE, ORDER_BY_NAME, GET_VIDEOGAME_BY_NAME, GET_GENRES, POST_VIDEOGAME, GET_DETAIL_PAGE, ORDER_BY_RATING } from '../actions/action-types'
 
 const initialState = {
     videogames: [],
@@ -8,7 +8,7 @@ const initialState = {
 };
 
 function rootReducer(state = initialState, action) {
-//Toma el estado actual y una accio -->devuelven un nuevo estado de la aplicación, actualiza el estado
+//Toma el estado actual y una accion -->devuelven un nuevo estado de la aplicación, actualiza el estado
     switch (action.type) {
         case GET_VIDEOGAMES:
             return {
@@ -19,28 +19,38 @@ function rootReducer(state = initialState, action) {
             
 
         case FILTERED_BY_GENRES:
-           // const allVideogames = state.allVideogames
-            //const filteredGenre = action.payload === 'All'? allVideogames : allVideogames.filter((videogame) => videogame.genres?.find(v => v === action.payload));
-            //return {
-              //  ...state,
-                //videogames: filteredGenre
-           // }
-           return {
+                /*const allVideogames = state.allVideogames;
+                const filteredGenre = action.payload === 'All'? allVideogames : allVideogames.filter((videogame) => videogame.genres?.find(v => v === action.payload));
+            
+                
+                return {
+                    ...state,
+                    videogames: filteredGenre
+                }
+           //return {
+            //...state,
+            //filteredVideogames: action.payload.videogameGenre,
+            //filterBy: action.payload.genre,
+          //}*/
+          return {
             ...state,
-            filteredVideogames: action.payload.videogameGenre,
-            filterBy: action.payload.genre,
-          };
+            videogames: state.videogames?.filter((juego) =>
+              juego.genres?.includes(action.payload)
+            ),
+          }
+
+			
 
         case FILTERED_CREATE:
             const allVideogames2= state.allVideogames;
-            const createdFilter = action.payload === 'Created' ?  allVideogames2.filter((element) => element.createdInDb) : allVideogames2.filter((element) => !element.createdInDb)
+            const createdFilter = action.payload === 'database' ?  allVideogames2.filter((element) => element.createdInDb) : allVideogames2.find((element) => !element.createdInDb)
             return {
                 ...state,
-                videogames: action.payload === 'All' ? state.allVideogames : createdFilter
+                videogames: action.payload === 'all' ? state.allVideogames : createdFilter
             }
         
         case ORDER_BY_NAME:
-            let sortedArr = action.payload === 'asc' ? 
+            /*let sortedArr = action.payload === 'asc' ? 
             state.characters.sort(function (a,b){ //sort ordena lista de elementos, lo ubica antes o despues del arreglo depende si son  + grande o + chico
                 if (a.name > b.name){
                     return 1;
@@ -63,12 +73,33 @@ function rootReducer(state = initialState, action) {
             return {
                 ...state,
                 videogamas: sortedArr
-            }
+            }*/
+
+            let orderAZ = state.videogames.slice().sort((a,b) =>{
+            if (a.name > b.name) return 1;
+            if (b.name > a.name) return -1;
+            return 0
+        })
+        return{
+            ...state,
+            videogames: action.payload === 'asc' ? orderAZ : orderAZ.reverse()
+        }
 
             case GET_VIDEOGAME_BY_NAME:
                 return{
                     ...state,
                     videogames:action.payload
+                }
+        
+            case ORDER_BY_RATING:
+                let orderAsc = state.allVideogames.slice().sort((a,b)=>{
+                    if (Number(a.rating) > Number(b.rating)) return 1;
+                    if (Number(b.rating) > Number (a.rating)) return -1;
+                    return 0
+                })
+                return{
+                    ...state,
+                    videogames: action.payload === 'asc' ? orderAsc : orderAsc.reverse()
                 }
 
             case GET_GENRES:
@@ -80,6 +111,15 @@ function rootReducer(state = initialState, action) {
                 return{
                     ...state,
                 }
+            case GET_DETAIL_PAGE:
+                /*return{
+                    ...state,
+                    detail: action.payload
+                }*/
+                return {
+                    ...state,
+                    videogame: action.payload,
+                  };
 
     
         default:

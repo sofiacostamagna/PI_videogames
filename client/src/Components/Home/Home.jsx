@@ -14,7 +14,7 @@ export default function Home()  {
 
     const dispatch = useDispatch()
     const allVideogames = useSelector((state) => state.videogames)
-    
+    console.log(allVideogames)
     
 
 /*---------------------------------------PAGINADO---------------------------------------------------------------*/
@@ -26,9 +26,10 @@ export default function Home()  {
     const indexOfLastVideogame = currentPage * videogamesPerPage //es la pag donde estoy * cant de VG por pag-> al principio será 15
     const indexOfFirstVideogame = indexOfLastVideogame - videogamesPerPage //al principio será 0
     
+    
     const currentVideogames = allVideogames.slice(indexOfFirstVideogame, indexOfLastVideogame) //Tiene los VG de la pag actual
     //slice agarra un arreglo y me toma la porción de lo que yo estoy pasando por parametro: el indice del primer VG y el del ultimo. 
-
+    
     const paginado = (pageNumber) => { //Le paso el n de pag
         setCurrentPage(pageNumber) //seteo la pag en el n de pag que pase.
     }

@@ -53,10 +53,10 @@ export default function CreateVideogame(){
     const [input, setInput]= useState({
         name: '',
         description: '',
+        image: '',
         released: '',
         rating: '',
         platforms: [],
-        image: '',
         genres: [],
 
     })
@@ -72,14 +72,19 @@ export default function CreateVideogame(){
         }));
     }
 
-    function handleChek(e){
-        if(e.target.checked){// el target esta chequeado
-            setInput({
-                ...input,
-                status: e.target.value
-            })
+    function handleCheck(event){ // lo usamos para chequear
+        if(event.target.checked){
+          setInput(prevState => ({
+            ...prevState,
+            platforms: [...prevState.platforms, event.target.value]
+          }))
+        } else {
+          setInput(prevState => ({
+            ...prevState,
+            platforms: prevState.platforms.filter(platform => platform !== event.target.value)
+          }))
         }
-    }
+      }
 
     function handleSelect(e){
         setInput({
@@ -91,7 +96,10 @@ export default function CreateVideogame(){
 
     function handleSubmit(e){
         e.prevetDefault();
-        dispatch(postVideogame(input))
+        dispatch(postVideogame(input).then((response)=>{
+            console.log(response);
+        }))
+        
         alert('Videogame Created!')
         setInput({ //setea el input a 0
             name: '',
@@ -113,15 +121,15 @@ export default function CreateVideogame(){
     }
 
     useEffect(()=>{
-        dispatch(getGenres());
+        dispatch (getGenres());
     }, []);
 
     //------------------------------------------FORMULARIO ------------------------------------------------------------
 
     return(
         <div>
-            <Link to = '/home'><button>Volver</button></Link>
-            <h1>Crea tu personaje</h1>
+            <Link to = '/home'><button>Back</button></Link>
+            <h1>Create your videogames</h1>
             <form onSubmit={(e)=>handleSubmit(e)}>
 
                 <div>
@@ -154,11 +162,11 @@ export default function CreateVideogame(){
                         <label>Realease Date: </label>
                         <input
                         type='date'
-                        value={input.released}
+                        value={input.relDate}
                         name='released'
                         onChange={(e)=>handleChange(e)}
                         />
-                        {errors.released && (<p>{errors.released}</p>
+                        {errors.relDate && (<p>{errors.relDate}</p>
                     )}
                     </div>
 
@@ -183,7 +191,7 @@ export default function CreateVideogame(){
                                             type='checkbox'
                                             name='platfrom'
                                             value={option}
-                                            onChange={(e)=>handleChek(e)}
+                                            onChange={(e)=>handleCheck(e)}
                                          />
                                         </label>
                                     ))}
