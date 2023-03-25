@@ -1,4 +1,4 @@
-require("dotenv").config();
+/*require("dotenv").config();
 const { Router } = require('express');
 const axios = require('axios');
 const { API_KEY } = process.env;
@@ -90,7 +90,7 @@ router.get('/', async function (req, res) {
 });
 
 
-module.exports = router;
+module.exports = router;*/
 
 
 //-----------------------------------LO CREE YO----------------------------------------------
@@ -163,3 +163,29 @@ router.get('/videogames', async (req, res)=>{
 module.exports = router;*/
 
 
+
+const { Router } = require("express");
+const { getAllVideogames } = require("../controllers/videogames");
+
+const router = Router();
+
+router.get("/", async (req, res) => {
+  try {
+    const name = req.query.name;
+    const videogamesTotal = await getAllVideogames();
+    if (name) {
+      const videogameName = videogamesTotal.filter((e) =>
+        e.name.toLowerCase().includes(name.toLowerCase())
+      );
+      videogameName.length
+        ? res.status(200).send(videogameName)
+        : res.status(404).send("No existe el Videojuego!!");
+    } else {
+      res.status(200).send(videogamesTotal);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+module.exports = router;
