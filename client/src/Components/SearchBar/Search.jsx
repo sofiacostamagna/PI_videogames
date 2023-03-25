@@ -1,38 +1,8 @@
-import React from 'react';
+/*import React from 'react';
 import {useState} from 'react';
 import {useDispatch} from 'react-redux';
 import { getVideogameByName} from '../../redux/actions/actions';
-
-
-
-/*
-//export default 
-
-
-function SearchBar({onSearch}) { // porps es un objeto por lo que puedo hacer destructing
-  const [character, setCharacter] = useState('') // este es el dato inicial, un string vacio
-
- 
-  const handleChange = (event) => { // recibe por paramento el event cuando pasa onChange
-     setCharacter(event.target.value) // la funcion se encarga de modificar con lo que pide el usuario a mi character, aca no me hago una copia
-  }
-
-  const handleReset = ()=>{
-   setCharacter('');
-  }
-
-   return (
-      <div>
-      <input className={style.button} type='search' value={character} onChange={handleChange} />
-      <button className={style.button} onClick={() => {
-         onSearch(character) 
-         handleReset()}}
-       >Agregar</button> 
-      </div>
-   ); // para pasar paramentro a una funcion dentro de un onChange u onClick lo realizo con una cb
-
-}
-export default SearchBar;*/
+import styles from './Search.module.css';
 
 export default function SearchBar(){
     const dispatch = useDispatch()
@@ -51,16 +21,64 @@ export default function SearchBar(){
     }
 
     return (
-        <div>
+        <div className={styles.body}>
+            <div className={styles.box}>
+            <form>
             <input
             type= 'text'
+            className={styles.input}
             placeholder="Search..."
             onChange={(e)=>handleInputChange(e)}
             />
-            <button
+            <button className={styles.box}
             type="submit"
             onClick = {(e)=> handleSubmit(e)}
             >Search</button>
+         </form>
         </div>
+        </div>
+    
     )
+}
+*/
+import React from 'react';
+import {useState} from 'react';
+import {useDispatch} from 'react-redux';
+import { getVideogameByName} from '../../redux/actions/actions';
+import styles from './Search.module.css';
+
+export default function SearchBar() {
+  const dispatch = useDispatch();
+  const [name, setName] = useState("");
+
+  function handleInputChange(e) {
+    e.preventDefault();
+    setName(e.target.value);
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (!name) {
+      return alert("Debe ingresar un nombre");
+    } else {
+      dispatch(getVideogameByName(name));
+      setName("");
+      document.getElementById("search").value = "";
+    }
+  }
+
+  return (
+    <div className={styles.searchBar}>
+      <input
+        className={styles.input}
+        id="search"
+        type="text"
+        placeholder="  Type here..."
+        onChange={(e) => handleInputChange(e)}
+      />
+      <button className={styles.boton}type="submit" onClick={(e) => handleSubmit(e)}>
+        SEARCH🔎
+      </button>
+    </div>
+  );
 }

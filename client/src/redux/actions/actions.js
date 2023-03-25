@@ -1,5 +1,5 @@
 import axios from 'axios'; 
-import { GET_VIDEOGAMES, FILTERED_BY_GENRES, FILTERED_CREATE , ORDER_BY_NAME, GET_VIDEOGAME_BY_NAME, GET_GENRES, GET_DETAIL_PAGE, ORDER_BY_RATING } from '../actions/action-types'
+import { GET_VIDEOGAMES, FILTERED_BY_GENRES, FILTERED_CREATE , ORDER_BY_NAME, GET_VIDEOGAME_BY_NAME, GET_GENRES, GET_DETAIL_PAGE, ORDER_BY_RATING, VIDEOGAME_CREATED } from '../actions/action-types'
 
 
 /*------------------------TRAE TODOS LOS VIDEOJUEGOS -----------------------------------
@@ -81,7 +81,7 @@ export function getVideogameByName(name){
 //ACTION QUE TRAE EL ARRAY DE GENEROS 
 export function getGenres() {  
   return async function (dispatch){
-      let info = await axios.get(`http://localhost:3001/genres`, {
+      let info = await axios.get("http://localhost:3001/genres", {
       })
       return dispatch({
           type: GET_GENRES,
@@ -89,20 +89,40 @@ export function getGenres() {
       })
     }
   }
-
+/*
   //ACTION POST- CREA VIDEOGAMES
   export function postVideogame (payload) {
     return async function(dispatch){
-      let response= await axios.post(`http://localhost:3001/videogames`, payload);
+      let response= await axios.post("http://localhost:3001/videogame", payload);
        return response;
     }
+  } */
+
+  //ACTION POST- CREA VIDEOGAMES
+export function postVideogame (payload) {
+  return async function(dispatch){
+    try {
+      let response = await axios.post("http://localhost:3001/videogame", payload);
+      let videogame = response.data; // Obtener el objeto de videojuego creado en el servidor
+      
+      dispatch({
+        type: VIDEOGAME_CREATED,
+        payload: videogame
+      }); // Enviar una acción para actualizar el store con el nuevo videojuego
+
+      return videogame; // Devolver el objeto del videojuego creado para otras operaciones
+    } catch (error) {
+      console.log(error);
+    }
   }
+}
+
 
   //ACTION QUE MUESTRA LOS DETALLES EN LAS CARTAS
-  export function getDetailPage(payload){
+  /*export function DetailPage(id){
     return async function(dispatch){
       try{
-        let json = await axios.get(`http://localhost:3001/videogame/${payload}`);
+        let json = await axios.get("http://localhost:3001/videogame/ + id");
         return dispatch({
           type: GET_DETAIL_PAGE ,
           payload: json.data
@@ -110,9 +130,25 @@ export function getGenres() {
       }catch (error){
         console.log(error)
       }
+    }*/
+
+    
+    export function DetailPage(id) {
+      return async function (dispatch) {
+        try {
+          const json = await axios.get(`http://localhost:3001/videogame/${id}`);
+          return dispatch({
+            type: GET_DETAIL_PAGE,
+            payload: json.data,
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      };
     }
 
-    }
+
+
 
   
 

@@ -1,10 +1,9 @@
 import './App.css';
 import { BrowserRouter, Route } from 'react-router-dom';
-import LandingPage from './Components/LandingPage/LandingPage';
+import LandigPage from './Components/LandigPage/LandigPage.jsx';
 import Home from './Components/Home/Home';
 import CreateVideogame from './Components/CreateVideogame/CreateVideogame';
-import DetailPage from './Components/DetailPage/DetailPage';
-
+import Detail from './Components/DetailPage/Detail';
 
 
 function App() {
@@ -14,10 +13,10 @@ function App() {
      
      
     
-      <Route exact path= '/' component={LandingPage}/>
+      <Route exact path= '/' component={LandigPage}/>
       <Route path='/home' component={Home}/>
       <Route path='/videogame' component={CreateVideogame} />
-      <Route exact path='/videogames/:id' component={DetailPage} />
+      <Route exact path='/videogame/:id' component={Detail} />
       
    
     </div>

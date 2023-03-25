@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import Card from '../Card/Card';
 import Paginado from '../Paginado/Paginado';
 import SearchBar from '../SearchBar/Search';
+import styles from './Home.module.css';
 
 
 /*-----------------------------------------HOME-----------------------------------------------------------------*/
@@ -14,20 +15,22 @@ export default function Home()  {
 
     const dispatch = useDispatch()
     const allVideogames = useSelector((state) => state.videogames)
-    console.log(allVideogames)
     
 
 /*---------------------------------------PAGINADO---------------------------------------------------------------*/
     //Defino estados locales --> uso useState xq es local.
     const [currentPage, setCurrentPage] = useState(1) //guardo el estado con la pag actual y otro estado que setea la pagina actual
     //arranca en 1 xq la pag actual es 1
-    const [videogamesPerPage, setVideogamesPerPage] = useState(15) //setea cuantos VG quiero por pag, el readme pide 15 
+    const [videogamesPerPage /*setVideogamesPerPage*/] = useState(15) //setea cuantos VG quiero por pag, el readme pide 15 
 
-    const indexOfLastVideogame = currentPage * videogamesPerPage //es la pag donde estoy * cant de VG por pag-> al principio será 15
+    const indexOfLastVideogame = currentPage * videogamesPerPage //(15) es la pag donde estoy * cant de VG por pag-> al principio será 15
     const indexOfFirstVideogame = indexOfLastVideogame - videogamesPerPage //al principio será 0
     
-    
-    const currentVideogames = allVideogames.slice(indexOfFirstVideogame, indexOfLastVideogame) //Tiene los VG de la pag actual
+    const currentVideogames = [];
+for (let i = indexOfFirstVideogame; i < indexOfLastVideogame && i < allVideogames.length; i++) {
+  currentVideogames.push(allVideogames[i]);
+}
+    //const currentVideogames = allVideogames.slice(indexOfFirstVideogame, indexOfLastVideogame) //Tiene los VG de la pag actual
     //slice agarra un arreglo y me toma la porción de lo que yo estoy pasando por parametro: el indice del primer VG y el del ultimo. 
     
     const paginado = (pageNumber) => { //Le paso el n de pag
@@ -78,96 +81,118 @@ export default function Home()  {
         
 
     return (
-        <div>
-            <Link to='/videogames'>Create Videogame</Link>
+        <div className={styles.fondo}> {/*estilo fondo */}
 
-            {/* TITULO DE LA PAGINA */}
+        <div className={styles.barraSup}>{/*estilos barra superios*/}
 
-            <h1>PI VIDEOGAMES</h1>
-            <h2>Costamagna Sofia</h2>
-            <button onClick={e => {handleClick(e)}}>Load all Videogames</button>
+        {/* TITULO DE LA PAGINA */}
+           
+        <h1 className={styles.titulo}>I 🤍 VIDEOGAMES </h1> 
 
-            {/* FILTROS Y ORDENAMIENTO  */}            
-         
-            <div>
-            {/* FILTRO ORDEN ASC Y DESC */}
-                <select onChange={e => handleSort(e)}> 
-                    <option value='asc'>A-Z</option> {/* value permite acceder al valor q tiene*/}
-                    <option value='desc'>Z-A</option>
-                </select>
+        {/* RECARGA VIDEOJUEGOS */}
+        <Link>
+        <button className={styles.botonAll} onClick={e => {handleClick(e)}}>LOAD ALL VIDEOGAMES</button>
+         </Link> 
+
+         {/* CREA VIDEOGAMES */}  
+
+         <Link to='/videogame'> 
+        <button className={styles.botonAll}>CREATE NEW VIDEOGAME</button>
+        </Link>
             
-            {/* FILTRO POR RATING */}
-                <select onChange={e => handleRating(e)}>
-                    <option value='asc'>Rating Ascending</option>
-                    <option value='desc'>Rating Descending</option>
-                </select>
+        {/* FILTROS Y ORDENAMIENTO  */}            
+         
+        {/* FILTRO ORDEN ASC Y DESC */}
+        <select className={styles.selector} onChange={e => handleSort(e)}> 
+        <option value='asc'>A-Z</option> {/* value permite acceder al valor q tiene*/}
+        <option value='desc'>Z-A</option>
+        </select>
+            
+        {/* FILTRO POR RATING */}
+        <select className={styles.selector} onChange={e => handleRating(e)}>
+        <option value=''>RATING</option>
+        <option value='asc'>ASC</option>
+        <option value='desc'>DESC</option>
+        </select>
 
-            {/* FILTRO POR GENERO */ }
-                <select onChange={event => handleFilteredGenre(event)}> 
-                    <option value='All'>All Genres</option>
-                    <option value='Action'>Action</option>
-                    <option value='Indie'>Indie</option>
-                    <option value='Adventure'>Adventure</option>
-                    <option value='RPG'>RPG</option>
-                    <option value='Strategy'>Strategy</option>
-                    <option value='Shooter'>Shooter</option>
-                    <option value='Casual'>Casual</option>
-                    <option value='Simulation'>Simulation</option>
-                    <option value='Puzzle'>Puzzle</option>
-                    <option value='Arcade'>Arcade</option>
-                    <option value='Platformer'>Platformer</option>
-                    <option value='Racing'>Racing</option>
-                    <option value='Massively Multiplayer'>Massively Multiplayer</option>
-                    <option value='Sports'>Sports</option>
-                    <option value='Fighting'>Fighting</option>
-                    <option value='Family'>Family</option>
-                    <option value='Board Games'>Board Games</option>
-                    <option value='Educational'>Educational</option>
-                    <option value='Card'>Card</option>                    
-                </select>
+        {/* FILTRO POR GENERO */ }
+        <select className={styles.selector1} onChange={event => handleFilteredGenre(event)}> 
+        <option value='All'>ALL GENRES</option>
+        <option value='Action'>ACTION</option>
+        <option value='Indie'>INDIE</option>
+        <option value='Adventure'>ADVENTURE</option>
+        <option value='RPG'>RPG</option>
+        <option value='Strategy'>STRATEGY</option>
+        <option value='Shooter'>SHOOTER</option>
+        <option value='Casual'>CASUAL</option>
+        <option value='Simulation'>SIMULATION</option>
+        <option value='Puzzle'>PUZZLE</option>
+        <option value='Arcade'>ARCADE</option>
+        <option value='Platformer'>PLATFORMER</option>
+        <option value='Racing'>RACING</option>
+        <option value='Massively Multiplayer'>Massively Multiplayer</option>
+        <option value='Sports'>SPORTS</option>
+        <option value='Fighting'>FIGHTING</option>
+        <option value='Family'>FAMILY</option>
+        <option value='Board Games'>BOARD GAMES</option>
+         <option value='Educational'>EDUCATIONAL</option>
+        <option value='Card'>CARD</option>                    
+        </select>
+
                 {/* OTRO OPCION NOSE SI FUNCIONA 
                 <select onChange={e => handleFilteredGenre(e)}> {/* filtrar por género  */}
                     {/*<option value='All' key='unique1'>All</option>
                     {allGenres.map((el) => {
                         return (
                             <option value={el.name} key={el.id}>{el.name}</option>
-                        )
-                    })}                   
-                </select> */} 
+                            )
+                        })}                   
+                    </select> */} 
             
-            {/* FILTRO POR ORIGEN API O DB */}
-                <select onChange={e => handleFilteredCreate(e)}>
-                    <option value='All'>All</option>
-                    <option value='DB'>DB Games</option>
-                    <option value='Api'>API Games</option>
-                </select>  
+        {/* FILTRO POR ORIGEN API O DB */}
+        <select className={styles.selector1} onChange={e => handleFilteredCreate(e)}>
+        <option value=''>CREATE</option>
+        <option value='DB'>CREATE BY DB</option>
+         <option value='Api'>CREATE BY API</option>
+        </select>  
 
+        </div>
 
-            {/* RENDERIZACION PAGINADO */}
-                <Paginado 
+        <div>
+            
+
+        {/* RENDERIZACION SEARCHBAR */}
+        <SearchBar />
+            
+        {/* DETALLE DE CARTA */}  
+
+          <div className={styles.card_contenedor}>
+        
+          { currentVideogames?.map ((element) => {
+              return (
+                  <div className={styles.card_contenedor}>
+                    <Card 
+                    name={element.name} 
+                    image = {element.image} 
+                    genres= {element.genres} 
+                    rating={element.rating}
+                    key ={element.id} 
+                    id = {element.id}
+                    />
+               </div>
+    
+                );
+            })
+        }
+        </div>
+         {/* RENDERIZACION PAGINADO */}
+         <Paginado 
                 videogamesPerPage = {videogamesPerPage}
                 allVideogames = {allVideogames.length}
                 paginado = {paginado}                
-                />        
-
-
-          </div>
-        
-        {/* RENDERIZACION SEARCHBAR */}
-            <SearchBar />
-        
-         
-          {/* RENDERIZADO DE LA CARD  */} 
-          {
-          
-            currentVideogames?.map ((element) => {
-                return (
-                    <Card name={element.name} image = {element.image} genres= {element.genres} key ={element.id} id = {element.id}/>
-                )
-               
-            })
-        }
-
-    </div>
-    )
-}
+                /> 
+                <p className={styles.page}></p>  
+                </div>
+                </div>
+    );
+}   

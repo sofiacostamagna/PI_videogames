@@ -50,30 +50,6 @@ function rootReducer(state = initialState, action) {
             }
         
         case ORDER_BY_NAME:
-            /*let sortedArr = action.payload === 'asc' ? 
-            state.characters.sort(function (a,b){ //sort ordena lista de elementos, lo ubica antes o despues del arreglo depende si son  + grande o + chico
-                if (a.name > b.name){
-                    return 1;
-                }
-                if (b.name > a.name){
-                    return -1;
-                }
-                return 0;
-            }) :
-            state.videogames.sort(function (a, b){
-                if (a.name > b.name){
-                    return -1;
-                }
-                if (b.name > a.name){
-                    return -1;
-                }
-                return 0;
-
-            })
-            return {
-                ...state,
-                videogamas: sortedArr
-            }*/
 
             let orderAZ = state.videogames.slice().sort((a,b) =>{
             if (a.name > b.name) return 1;
@@ -85,13 +61,13 @@ function rootReducer(state = initialState, action) {
             videogames: action.payload === 'asc' ? orderAZ : orderAZ.reverse()
         }
 
-            case GET_VIDEOGAME_BY_NAME:
+        case GET_VIDEOGAME_BY_NAME:
                 return{
                     ...state,
                     videogames:action.payload
                 }
         
-            case ORDER_BY_RATING:
+        case ORDER_BY_RATING:
                 let orderAsc = state.allVideogames.slice().sort((a,b)=>{
                     if (Number(a.rating) > Number(b.rating)) return 1;
                     if (Number(b.rating) > Number (a.rating)) return -1;
@@ -99,7 +75,7 @@ function rootReducer(state = initialState, action) {
                 })
                 return{
                     ...state,
-                    videogames: action.payload === 'asc' ? orderAsc : orderAsc.reverse()
+                    videogames: action.payload === 'desc' ? orderAsc : orderAsc.reverse()
                 }
 
             case GET_GENRES:
@@ -118,7 +94,7 @@ function rootReducer(state = initialState, action) {
                 }*/
                 return {
                     ...state,
-                    videogame: action.payload,
+                    detail: action.payload,
                   };
 
     
