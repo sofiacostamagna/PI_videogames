@@ -1,10 +1,13 @@
 const { Router } = require("express");
+const getGenres = require("../controllers/genres");
 const { Genre } = require("../db");
+
 
 const router = Router();
 
 router.get("/", async (req, res) => {
   try {
+    await getGenres();
     const allGenres = await Genre.findAll();
     res.status(200).send(allGenres);
   } catch (error) {
@@ -13,12 +16,17 @@ router.get("/", async (req, res) => {
 });
 
 
-module.exports = router;
+module.exports = router; 
+
+
+
+
+
 
 
 //-------------------------------------------LO CREE YO-----------------------------------------------------------
 
-/*router.get('/genres', async (res,req)=>{
+/*router.get('/', async (res,req)=>{
 
     const genresApi = await axios.get(`https://api.rawg.io/api/genres?key=${API_KEY}`) //entra a la Api y me trae info
 
@@ -40,5 +48,4 @@ module.exports = router;
 
 
 
-module.exports = router;*/
-
+module.exports = router; */
