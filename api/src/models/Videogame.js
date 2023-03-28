@@ -38,7 +38,7 @@ module.exports = (sequelize) => {
       allowNull: false,
       defaultValue: true
     },
-    //Sirve por si queremos acceder al personaje q solo creamos en la DB.
+    //Sirve por si queremos acceder al videojuego q solo creamos en la DB.
   },
   {timestamps:false});
 };

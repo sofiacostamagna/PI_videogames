@@ -1,62 +1,63 @@
-import { GET_VIDEOGAMES, FILTERED_BY_GENRES, FILTERED_CREATE, ORDER_BY_NAME, GET_VIDEOGAME_BY_NAME, GET_GENRES, POST_VIDEOGAME, GET_DETAIL_PAGE, ORDER_BY_RATING } from '../actions/action-types'
+//MANEJAMOS EL ESTADO DE LA APLICACION Y SE ENCARGA DE ACTUALIZARLO EN RESPUESTA A DIFERENTES ACCIONES 
+//QUE SE ENVIAN A TRAVES DE LA API(action-types).
 
-const initialState = {
-    videogames: [],
-    allVideogames: [],
-    genres: [],
-    detail: []
-};
+import { GET_VIDEOGAMES, 
+         GET_VIDEOGAME_BY_NAME,
+         GET_GENRES, 
+         GET_DETAIL,
+         FILTERED_BY_GENRES, 
+         FILTERED_BY_ORIGIN, 
+         POST_VIDEOGAME, 
+         ORDER_BY_NAME, 
+         ORDER_BY_RATING ,
+    } from '../actions/action-types'
 
-function rootReducer(state = initialState, action) {
-//Toma el estado actual y una accion -->devuelven un nuevo estado de la aplicación, actualiza el estado
-    switch (action.type) {
+    const initialState = {
+        videogames: [],
+        allVideogames: [],
+        genres: [],
+        detail: []
+    };
+    
+    function rootReducer(state = initialState, action) {
+        //Toma el estado actual y una accion a ser realizada -->devuelven un nuevo estado de la aplicación.
+        switch (action.type) {
+
         case GET_VIDEOGAMES:
             return {
-                ...state,
-                videogames: action.payload,
-                allVideogames: action.payload
+                ...state,//crea una copia del estado actual 
+                videogames: action.payload, //actualiza el state con la info de VG q recibe por payload
+                allVideogames: action.payload //idem
             }
             
 
         case FILTERED_BY_GENRES:
-                /*const allVideogames = state.allVideogames;
-                const filteredGenre = action.payload === 'All'? allVideogames : allVideogames.filter((videogame) => videogame.genres?.find(v => v === action.payload));
-            
-                
-                return {
-                    ...state,
-                    videogames: filteredGenre
-                }
-           //return {
-            //...state,
-            //filteredVideogames: action.payload.videogameGenre,
-            //filterBy: action.payload.genre,
-          //}*/
           return {
-            ...state,
-            videogames: state.videogames?.filter((juego) =>
-              juego.genres?.includes(action.payload)
+            ...state, //crea una copia del estado actual 
+            videogames: state.videogames?.filter((juego) => //filtra los VG por genero
+              juego.genres?.includes(action.payload)//los que contengan el genero especificado por payload.
             ),
           }
 
 			
-
-        case FILTERED_CREATE:
-            const allVideogames2= state.allVideogames;
-            const createdFilter = action.payload === 'database' ?  allVideogames2.filter((element) => element.createdInDb) : allVideogames2.find((element) => !element.createdInDb)
-            return {
+        case FILTERED_BY_ORIGIN:
+            const allVideogames2= state.allVideogames; //obtenemos la lista completa de todos los VG
+            const filteredVideogames= allVideogames2.filter((el)=> action.payload === 'created' ? el.createInDb : !el.createInDb);
+            //comprobamos si el valaro de action.payload es created o no
+             return{
                 ...state,
-                videogames: action.payload === 'all' ? state.allVideogames : createdFilter
+                videogames: filteredVideogames// actualiza el estado
             }
-        
-        case ORDER_BY_NAME:
+
+             
+            case ORDER_BY_NAME:
 
             let orderAZ = state.videogames.slice().sort((a,b) =>{
             if (a.name > b.name) return 1;
             if (b.name > a.name) return -1;
             return 0
         })
-        return{
+            return{
             ...state,
             videogames: action.payload === 'asc' ? orderAZ : orderAZ.reverse()
         }
@@ -87,15 +88,14 @@ function rootReducer(state = initialState, action) {
                 return{
                     ...state,
                 }
-            case GET_DETAIL_PAGE:
-                /*return{
-                    ...state,
-                    detail: action.payload
-                }*/
+            
+            case GET_DETAIL:
                 return {
-                    ...state,
-                    detail: action.payload,
-                  };
+                  ...state,
+                  detail: action.payload,
+              };
+
+
 
     
         default:

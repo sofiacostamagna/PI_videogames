@@ -5,11 +5,14 @@ const { Genre } = require("../db");
 
 const router = Router();
 
+//RUTA GET /genres:
 router.get("/", async (req, res) => {
   try {
-    await getGenres();
-    const allGenres = await Genre.findAll();
+    await getGenres();//llamamos a la funcion del controllers genres
+
+    const allGenres = await Genre.findAll(); //obtenemos los generos almacenados en ls DB
     res.status(200).send(allGenres);
+    
   } catch (error) {
     console.log(error);
   }

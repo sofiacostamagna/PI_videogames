@@ -6,14 +6,17 @@ const { API_KEY } = process.env;
 
 const router = Router();
 
+//RUTA GET /videogames/:id:
 router.get("/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    if (!uuidValidate(id)) {
+    if (!uuidValidate(id)) { //validamos ID ->x libreria uuid 
+      //si no es un identificador uuid-> no esta en la DB 
+      //buscamos en la API
       const videogameId = await axios.get(
         `https://api.rawg.io/api/games/${id}?key=${API_KEY}`
       );
-      const videogameInfo = {
+      const videogameInfo = { // creamos un objeto con la info obtenida
         id: videogameId.data.id,
         name: videogameId.data.name,
         image: videogameId.data.background_image,
@@ -27,12 +30,13 @@ router.get("/:id", async (req, res) => {
       };
       videogameInfo
         ? res.status(200).send(videogameInfo)
-        : res.status(404).send("No existe el ID ingresado!!");
-    } else {
-      const videogameDb = await Videogame.findByPk(id, {
+        : res.status(404).send("No existe el ID ingresado");
+
+    } else { //Si tiene un uudi ->buscamos en la DB 
+      const videogameDb = await Videogame.findByPk(id, { //el metodo fingByPk busca un registro x su clave primaria
         include: Genre,
       });
-      const videogameIdDb = {
+      const videogameIdDb = { //creamos un objeto con la info obtenida
         id: videogameDb.id,
         name: videogameDb.name,
         image: videogameDb.image,
@@ -45,15 +49,17 @@ router.get("/:id", async (req, res) => {
       };
       videogameIdDb
         ? res.status(200).send(videogameIdDb)
-        : res.status(404).send("No existe el ID ingresado!!");
+        : res.status(404).send("No existe el ID ingresado");
     }
   } catch (error) {
     console.log(error);
   }
 });
 
+
+//RUTA POST /videogames:
 router.post("/", async (req, res) => {
-  try {
+  try { // extraemos los datos del body
     const {
       name,
       image,
@@ -62,10 +68,10 @@ router.post("/", async (req, res) => {
       rating,
       genres,
       platforms,
-      createdInDb,
+      createdInDb, //booleano q indica si se creo en la DB
     } = req.body;
 
-    const videogameCreated = await Videogame.create({
+    const videogameCreated = await Videogame.create({ //creamos una nueva instancia del VG con los datos 
       name,
       image,
       description,
@@ -75,12 +81,13 @@ router.post("/", async (req, res) => {
       createdInDb,
     });
 
-    const genresDb = await Genre.findAll({
+    const genresDb = await Genre.findAll({ //buscamos todos los generos que se especifican en el body
       where: { name: genres },
     });
 
-    videogameCreated.addGenre(genresDb);
-    res.status(200).send("Videojuego creado con exito!!");
+    videogameCreated.addGenre(genresDb); //agregamos los generos una vez encontrados.
+    res.status(200).send("Videojuego creado con exito");
+    
   } catch (error) {
     console.log(error);
   }
