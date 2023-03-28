@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware, compose } from 'redux'; // el createStore crea una rama o raiz en React Dom
-import thunkMiddleware from 'redux-thunk';
+import thunkMiddleware from 'redux-thunk'; // nos permite manejar actions asincronas en Redux
 import reducer from '../reducer/reducer';
 
 

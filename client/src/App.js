@@ -14,9 +14,9 @@ function App() {
      
     
       <Route exact path= '/' component={LandigPage}/>
-      <Route path='/home' component={Home}/>
-      <Route path='/videogame' component={CreateVideogame} />
-      <Route exact path='/videogame/:id' component={Detail} />
+      <Route exact path='/home' component={Home}/>
+      <Route exact path='/videogame' component={CreateVideogame} />
+      <Route exact path='/videogames/:id' component={Detail} />
       
    
     </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react'; 
 import { useDispatch, useSelector } from 'react-redux'; 
-import { getVideogames, filteredVideogamesByGenres, filteredCreate, orderByName, orderByRating} from '../../redux/actions/actions';
+import { getVideogames, filteredVideogamesByGenres, orderByName, orderByRating, filteredByOrigin} from '../../redux/actions/actions';
 import { Link } from 'react-router-dom'
 import Card from '../Card/Card';
 import Paginado from '../Paginado/Paginado';
@@ -13,7 +13,7 @@ import styles from './Home.module.css';
 
 export default function Home()  {
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     const allVideogames = useSelector((state) => state.videogames)
     
 
@@ -54,8 +54,11 @@ for (let i = indexOfFirstVideogame; i < indexOfLastVideogame && i < allVideogame
     }
     
     //POR COMO FUERON CREADOS:
-    const handleFilteredCreate=(e)=>{ 
+    /*const handleFilteredCreate=(e)=>{ 
         dispatch(filteredCreate(e.target.value));
+    }*/
+    function handleFilteredByOrigin(event){ //Handle del filtrado by ORIGIN
+        dispatch(filteredByOrigin(event.target.value))
     }
 
     // POR NOMBRE:
@@ -90,9 +93,9 @@ for (let i = indexOfFirstVideogame; i < indexOfLastVideogame && i < allVideogame
         <h1 className={styles.titulo}>I 🤍 VIDEOGAMES </h1> 
 
         {/* RECARGA VIDEOJUEGOS */}
-        <Link>
+        <Link to='/home'>
         <button className={styles.botonAll} onClick={e => {handleClick(e)}}>LOAD ALL VIDEOGAMES</button>
-         </Link> 
+        </Link>
 
          {/* CREA VIDEOGAMES */}  
 
@@ -150,10 +153,10 @@ for (let i = indexOfFirstVideogame; i < indexOfLastVideogame && i < allVideogame
                     </select> */} 
             
         {/* FILTRO POR ORIGEN API O DB */}
-        <select className={styles.selector1} onChange={e => handleFilteredCreate(e)}>
-        <option value=''>CREATE</option>
-        <option value='DB'>CREATE BY DB</option>
-         <option value='Api'>CREATE BY API</option>
+        <select className={styles.selector1} onChange={e => handleFilteredByOrigin(e)}>
+        <option value=''>CREATED</option>
+        <option value='DB'>CREATED BY DB</option>
+         <option value='Api'>CREATED BY API</option>
         </select>  
 
         </div>
@@ -191,8 +194,9 @@ for (let i = indexOfFirstVideogame; i < indexOfLastVideogame && i < allVideogame
                 allVideogames = {allVideogames.length}
                 paginado = {paginado}                
                 /> 
-                <p className={styles.page}></p>  
-                </div>
-                </div>
+                <p className={styles.page}></p> 
+       
+        </div>           
+     </div>
     );
 }   
