@@ -1,12 +1,13 @@
 import React from 'react';
-import { useState, useEffect } from 'react'; 
-import { useDispatch, useSelector } from 'react-redux'; 
+import { useState, useEffect } from 'react'; //hooks que maneja el estado en la api
+import { useDispatch, useSelector } from 'react-redux'; //hooks maneja el estados en la api
 import { getVideogames, filteredVideogamesByGenres, orderByName, orderByRating, filteredByOrigin} from '../../redux/actions/actions';
 import { Link } from 'react-router-dom'
 import Card from '../Card/Card';
 import Paginado from '../Paginado/Paginado';
 import SearchBar from '../SearchBar/Search';
 import styles from './Home.module.css';
+import Footer from '../Footer/Footer';
 
 
 /*-----------------------------------------HOME-----------------------------------------------------------------*/
@@ -23,15 +24,14 @@ export default function Home()  {
     //arranca en 1 xq la pag actual es 1
     const [videogamesPerPage /*setVideogamesPerPage*/] = useState(15) //setea cuantos VG quiero por pag, el readme pide 15 
 
+    //calculamos el indice del primer y ultimo VG q vamos a mostrar por pagina:
     const indexOfLastVideogame = currentPage * videogamesPerPage //(15) es la pag donde estoy * cant de VG por pag-> al principio será 15
     const indexOfFirstVideogame = indexOfLastVideogame - videogamesPerPage //al principio será 0
     
-    const currentVideogames = [];
-for (let i = indexOfFirstVideogame; i < indexOfLastVideogame && i < allVideogames.length; i++) {
-  currentVideogames.push(allVideogames[i]);
-}
-    //const currentVideogames = allVideogames.slice(indexOfFirstVideogame, indexOfLastVideogame) //Tiene los VG de la pag actual
-    //slice agarra un arreglo y me toma la porción de lo que yo estoy pasando por parametro: el indice del primer VG y el del ultimo. 
+    const currentVideogames = [];//almacenamos los VG q se van a mostrar por pag actual
+    for (let i = indexOfFirstVideogame; i < indexOfLastVideogame && i < allVideogames.length; i++) {
+    currentVideogames.push(allVideogames[i]); //iterea desde el First hasta el Last y agrega cada VG del arreglo al const allVG
+   }
     
     const paginado = (pageNumber) => { //Le paso el n de pag
         setCurrentPage(pageNumber) //seteo la pag en el n de pag que pase.
@@ -44,7 +44,8 @@ for (let i = indexOfFirstVideogame; i < indexOfLastVideogame && i < allVideogame
 
    //MUESTRA TODOS LOS VIDEOGAMES:
    function handleClick(e) {
-        e.preventDefault(); //se usa para no recargue la página por el useEffect.
+        e.preventDefault(); //para evitar la accion predeterminada del e(la recarga de la pag x el useEffect)
+        //que se recargue la pag y se pierda lo que hiso el usuario
         dispatch(getVideogames());
     }
 
@@ -54,30 +55,30 @@ for (let i = indexOfFirstVideogame; i < indexOfLastVideogame && i < allVideogame
     }
     
     //POR COMO FUERON CREADOS:
-    /*const handleFilteredCreate=(e)=>{ 
-        dispatch(filteredCreate(e.target.value));
-    }*/
-    function handleFilteredByOrigin(event){ //Handle del filtrado by ORIGIN
-        dispatch(filteredByOrigin(event.target.value))
+    function handleFilteredByOrigin(event){ 
+        dispatch(filteredByOrigin(event.target.value))//toma el valor del elemento seleccionado y llama a la funcion filteredByOrigin
+        //con este valor como argumento para q filtre x el elemento seleccionado
     }
 
     // POR NOMBRE:
     const [orden, setOrden] = useState('')
-      function handleSort(e){ 
+      function handleSort(e){ //recibe un e y sera llamado cuando seleccione una opcin de orden
         e.preventDefault(); // creo un estado vacio local que arranca vacio
         dispatch(orderByName(e.target.value))
 
-        setCurrentPage(1);
-        setOrden(`Ordenado ${e.target.value}`)// aca lo seteo ordenado 
+        //actualiza los estados locales de currentPage y orden
+        setCurrentPage(1);//vuelve a la primera pag para ver los resultados de la busquedad actualizado
+        setOrden(`Ordenado ${e.target.value}`)// aca lo seteo ordenado  concatenando con el value seleccionado
     };
 
     //POR RATING:
     const [orderRating, setRating]= useState('');
     function handleRating(e){
         e.preventDefault();
-        dispatch(orderByRating(e.target.value))
-        setCurrentPage(1);
+        dispatch(orderByRating(e.target.value))//pasamos e valor seleccionado 
 
+        //actualiza los estados locales
+        setCurrentPage(1);//actualizo el valor currentPage a 1->con resultados actualizado
         setRating(e.target.value);
         setOrden("Order" + e.target.value);
     }
@@ -102,6 +103,7 @@ for (let i = indexOfFirstVideogame; i < indexOfLastVideogame && i < allVideogame
          <Link to='/videogame'> 
         <button className={styles.botonAll}>CREATE NEW VIDEOGAME</button>
         </Link>
+
             
         {/* FILTROS Y ORDENAMIENTO  */}            
          
@@ -142,15 +144,6 @@ for (let i = indexOfFirstVideogame; i < indexOfLastVideogame && i < allVideogame
         <option value='Card'>CARD</option>                    
         </select>
 
-                {/* OTRO OPCION NOSE SI FUNCIONA 
-                <select onChange={e => handleFilteredGenre(e)}> {/* filtrar por género  */}
-                    {/*<option value='All' key='unique1'>All</option>
-                    {allGenres.map((el) => {
-                        return (
-                            <option value={el.name} key={el.id}>{el.name}</option>
-                            )
-                        })}                   
-                    </select> */} 
             
         {/* FILTRO POR ORIGEN API O DB */}
         <select className={styles.selector1} onChange={e => handleFilteredByOrigin(e)}>
@@ -188,13 +181,21 @@ for (let i = indexOfFirstVideogame; i < indexOfLastVideogame && i < allVideogame
             })
         }
         </div>
+
+        <div>
+            <Footer />
+        </div>
          {/* RENDERIZACION PAGINADO */}
          <Paginado 
                 videogamesPerPage = {videogamesPerPage}
                 allVideogames = {allVideogames.length}
-                paginado = {paginado}                
+                paginado = {paginado}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}                
                 /> 
                 <p className={styles.page}></p> 
+
+        
        
         </div>           
      </div>

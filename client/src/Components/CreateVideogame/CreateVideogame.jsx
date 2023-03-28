@@ -10,6 +10,7 @@ import styles from './Create.module.css';
 //--------------------------------------VALIDACION---------------------------------------------------
 function validater(input){
   let errors= {};
+
   if(!input.name){// input es el estado local-> pregunto si en mi estado local.name no hay nada
     errors.name= 'Name is required';// entonces en mi objeto .name voy a colocar q se requiere un name
     
@@ -51,8 +52,7 @@ export default function CreateVideogame(){
     
 
     //PARA CREAR MI PERSONAJE TENGO QUE TENER MI FORMULARIO QUE LO GUARDO EN UN ESTADO
-
-    const [input, setInput]= useState({
+  const [input, setInput]= useState({
         name: '',
         description: '',
         image: '',
@@ -74,9 +74,7 @@ export default function CreateVideogame(){
         }));
     }
 
-    
-
-      function handleSelect(e) {
+    function handleSelect(e) {
         setInput({
           ...input,
           genres: input.genres.includes(e.target.value)
@@ -85,7 +83,7 @@ export default function CreateVideogame(){
         });
       }
     
-      function handleSelect2(e) {
+    function handleSelect2(e) {
         setInput({
           ...input,
           platforms: input.platforms.includes(e.target.value)
@@ -95,11 +93,16 @@ export default function CreateVideogame(){
       }
 
 
-
+    //valida si los campos requeridos se completaron 
     async function handleSubmit(event) {
         event.preventDefault();
+
+        if(Object.keys(errors).length > 0){ //si hay algun campo que esta vacio, envia un error
+          alert('All fields are required to be filled in correctly')
+          return;
+        }
       
-        try {
+        try { //si esta completo crea un VG
             const response = await dispatch(postVideogame(input));
             console.log(response);
             alert('Videogame Created!');
@@ -112,10 +115,11 @@ export default function CreateVideogame(){
                 image: '',
                 genres: [],
             });
-            history.push('/home');
+            history.push('/home'); //y vuelve a la pag incial (home)
         } catch (error) {
+
             console.error(error);
-            alert('Error creating videogame!');
+            alert('Error creating videogame');//sino tira un error
         }
     }
     
@@ -206,7 +210,7 @@ export default function CreateVideogame(){
 
                 {/*PLATFORMS*/}
                 <div className={styles.itemF}>
-                  <label className={styles.labelF}>Plataformas:</label>
+                  <label className={styles.labelF}>Platforms:</label>
                   <br></br>
                   <select
                  className={styles.inputF}
