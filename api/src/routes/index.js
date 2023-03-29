@@ -6,6 +6,8 @@ const { Router } = require("express");
 const videogames = require("./videogames");
 const genres = require("./genres");
 const videogame = require("./videogame");
+const deleteVideogames = require('./deleteVideogames')
+
 
 
 const router = Router();
@@ -17,5 +19,10 @@ router.use("/genres", genres);
 router.use('/videogames/:id', videogame);
 //POST:
 router.use("/videogames", videogame);
+//DELETE
+router.use('/videogames', deleteVideogames);
+
+
+
 
 module.exports = router;
