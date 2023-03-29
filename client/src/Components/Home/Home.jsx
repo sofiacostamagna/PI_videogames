@@ -147,12 +147,11 @@ export default function Home()  {
             
         {/* FILTRO POR ORIGEN API O DB */}
           
-        <select  onChange={event => handleFilteredByOrigin(event)}> {/* filtrar por origen: api o bbd  */}
-                                    <option  value=''>CREATOR ▼</option>
-                                    <option value='all'>All</option>
-                                    <option value='database'>Created by you</option>
-                                    <option value='all'>Our DataBase</option>
-                                </select> 
+        <select  onChange={handleFilteredByOrigin} name="" id=""> {/* filtrar por origen: api o bbd  */}
+            <option value='default'>ALL</option>
+            <option value='DB'>CREATED BY YOU</option>
+            <option value='API'>OUR API</option>
+        </select> 
 
         </div>
 

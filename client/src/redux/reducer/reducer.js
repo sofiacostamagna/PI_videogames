@@ -71,16 +71,36 @@ function rootReducer(state = initialState, action) {
                         videogames: action.payload === 'all' ? allVideogames : orderCreate
                     }*/
 
-        case "FILTERED_BY_ORIGIN":
+        /*case "FILTERED_BY_ORIGIN":
             const allVideogames2 = state.allVideogames;
             const originFilter = action.payload === 'database' ?  allVideogames2.filter((element) => element.createInDb) : allVideogames2.filter((element) => !element.createInDb)
             console.log(action.payload)
                 return {
                      ...state,
                     videogames: action.payload === 'all' ? state.allVideogames : originFilter
+                }*/
+
+        case "FILTERED_BY_ORIGIN":
+            if (action.payload === 'default'){
+                return {...state, videogames: state.allVideogames}
                 }
-                    
-                    
+              
+            if(action.payload === 'DB'){
+                return {...state, videogames: state.allVideogames.filter((game)=> (typeof game.id) === 'string')}
+                }
+              
+            if(action.payload === 'API'){
+                return {...state, videogames: state.allVideogames.filter((game)=> (typeof game.id) === 'number')}
+                }
+              
+            else {
+                return {...state, filtered: state.gamesBackUp.filter((game) => {
+                    return game.genres.find((genre) => {
+                        return genre === action.payload})
+                })}
+            };
+       
+
                     
         case "ORDER_BY_NAME":
             let orderAZ = state.videogames.slice().sort((a,b) =>{ // crea una copia del array de VG del estado y ordena
