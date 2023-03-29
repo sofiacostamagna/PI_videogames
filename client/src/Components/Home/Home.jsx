@@ -95,7 +95,7 @@ export default function Home()  {
 
         {/* RECARGA VIDEOJUEGOS */}
         <Link to='/home'>
-        <button className={styles.botonAll} onClick={e => {handleClick(e)}}>LOAD ALL VIDEOGAMES</button>
+        <button className={styles.botonAll} onClick={e => {handleClick(e)}}>ALL VIDEOGAMES</button>
         </Link>
 
          {/* CREA VIDEOGAMES */}  
@@ -146,11 +146,13 @@ export default function Home()  {
 
             
         {/* FILTRO POR ORIGEN API O DB */}
-        <select className={styles.selector1} onChange={e => handleFilteredByOrigin(e)}>
-        <option value=''>CREATED</option>
-        <option value='DB'>CREATED BY DB</option>
-         <option value='Api'>CREATED BY API</option>
-        </select>  
+          
+        <select  onChange={event => handleFilteredByOrigin(event)}> {/* filtrar por origen: api o bbd  */}
+                                    <option  value=''>CREATOR ▼</option>
+                                    <option value='all'>All</option>
+                                    <option value='database'>Created by you</option>
+                                    <option value='all'>Our DataBase</option>
+                                </select> 
 
         </div>
 

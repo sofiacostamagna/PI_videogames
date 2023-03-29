@@ -37,6 +37,7 @@ export function filteredVideogamesByGenres(payload){
 
 
 //ACTION QUE TRAE VIDEOGAMES SEGUN FUERON CREADOS EN BDD O DE LA API
+
 export const filteredByOrigin = (payload) => { //ACTION QUE TRAE VIDEOGAMES SEGUN FUERON CREADOS EN BDD O DE LA API
   return {
       type: FILTERED_BY_ORIGIN,

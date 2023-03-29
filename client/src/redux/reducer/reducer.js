@@ -52,13 +52,13 @@ function rootReducer(state = initialState, action) {
                     videogames: action.payload === 'all' ? state.allVideogames : filteredVideogames
                 }*/
                 
-        case "FILTERED_BY_ORIGIN":
+        /*case "FILTERED_BY_ORIGIN":
             const allVideogames1 = state.allVideogames;
             const filteredVideogames = allVideogames1.filter((el) => action.payload === 'created' ? el.createInDb : !el.createInDb);
                 return {
                     ...state,
-                    dogs: filteredVideogames
-                };
+                    allVideogames: filteredVideogames
+                };*/
                     
                     /*case FILTERED_BY_ORIGIN:
                     const allVideogames = state.allVideogames;    
@@ -70,6 +70,15 @@ function rootReducer(state = initialState, action) {
                         ...state,
                         videogames: action.payload === 'all' ? allVideogames : orderCreate
                     }*/
+
+        case "FILTERED_BY_ORIGIN":
+            const allVideogames2 = state.allVideogames;
+            const originFilter = action.payload === 'database' ?  allVideogames2.filter((element) => element.createInDb) : allVideogames2.filter((element) => !element.createInDb)
+            console.log(action.payload)
+                return {
+                     ...state,
+                    videogames: action.payload === 'all' ? state.allVideogames : originFilter
+                }
                     
                     
                     
