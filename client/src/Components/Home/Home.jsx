@@ -7,7 +7,7 @@ import Card from '../Card/Card';
 import Paginado from '../Paginado/Paginado';
 import SearchBar from '../SearchBar/Search';
 import styles from './Home.module.css';
-import Footer from '../Footer/Footer';
+
 
 
 /*-----------------------------------------HOME-----------------------------------------------------------------*/
@@ -16,6 +16,7 @@ export default function Home()  {
 
     const dispatch = useDispatch();
     const allVideogames = useSelector((state) => state.videogames)
+    
     
 
 /*---------------------------------------PAGINADO---------------------------------------------------------------*/
@@ -69,21 +70,18 @@ export default function Home()  {
         //actualiza los estados locales de currentPage y orden
         setCurrentPage(1);//vuelve a la primera pag para ver los resultados de la busquedad actualizado
         setOrden(`Ordenado ${e.target.value}`)// aca lo seteo ordenado  concatenando con el value seleccionado
-    };
+    }
 
     //POR RATING:
-    const [orderRating, setRating]= useState('');
-    function handleRating(e){
-        e.preventDefault();
-        dispatch(orderByRating(e.target.value))//pasamos e valor seleccionado 
-
-        //actualiza los estados locales
-        setCurrentPage(1);//actualizo el valor currentPage a 1->con resultados actualizado
-        setRating(e.target.value);
-        setOrden("Order" + e.target.value);
+    const [ratingchange, setRatingchange] = useState('');
+    function handleRating(e) {             //handleByRating
+        dispatch(orderByRating(e.target.value));
+        setCurrentPage(1);   // para q el usuario sea redirigido a la pagina 1 
+                          
+        setRatingchange(e.target.value); 
+        setOrden("Order" + e.target.value); 
     }
         
-
     return (
         <div className={styles.fondo}> {/*estilo fondo */}
 
@@ -95,7 +93,7 @@ export default function Home()  {
 
         {/* RECARGA VIDEOJUEGOS */}
         <Link to='/home'>
-        <button className={styles.botonAll} onClick={e => {handleClick(e)}}>ALL VIDEOGAMES</button>
+        <button className={styles.botonAll} onClick={e => {handleClick(e)}}>RESET FILTERS</button>
         </Link>
 
          {/* CREA VIDEOGAMES */}  
@@ -114,15 +112,16 @@ export default function Home()  {
         </select>
             
         {/* FILTRO POR RATING */}
-        <select className={styles.selector} onChange={e => handleRating(e)}>
-        <option value=''>RATING</option>
-        <option value='asc'>ASC</option>
-        <option value='desc'>DESC</option>
+        <select className={styles.selector1} onChange={e => handleRating(e)}>
+        <option value=''>RATING ▼ </option>
+        <option value='desc'>LOW TO HIGH</option>
+        <option value='asc'>HIGH TO LOW</option>
         </select>
 
         {/* FILTRO POR GENERO */ }
         <select className={styles.selector1} onChange={event => handleFilteredGenre(event)}> 
-        <option value='All'>ALL GENRES</option>
+        <option value=''>GENRE ▼ </option>
+
         <option value='Action'>ACTION</option>
         <option value='Indie'>INDIE</option>
         <option value='Adventure'>ADVENTURE</option>
@@ -147,7 +146,8 @@ export default function Home()  {
             
         {/* FILTRO POR ORIGEN API O DB */}
           
-        <select  onChange={handleFilteredByOrigin} name="" id=""> {/* filtrar por origen: api o bbd  */}
+        <select className={styles.selector1} onChange={handleFilteredByOrigin} name="" id=""> {/* filtrar por origen: api o bbd  */}
+            <option value=''>CREATED ▼ </option>
             <option value='default'>ALL</option>
             <option value='DB'>CREATED BY YOU</option>
             <option value='API'>OUR API</option>
@@ -183,9 +183,7 @@ export default function Home()  {
         }
         </div>
 
-        <div>
-            <Footer />
-        </div>
+        
          {/* RENDERIZACION PAGINADO */}
          <Paginado 
                 videogamesPerPage = {videogamesPerPage}

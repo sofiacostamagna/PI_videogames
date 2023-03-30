@@ -5,7 +5,7 @@ import styles from './paginado.module.css';
                                   //VG x pag -Todos VG-Pag actual -Cambio de pag- Actualiza el state de pag actual
 export default function Paginado ({ videogamesPerPage, allVideogames, currentPage, paginado, setCurrentPage }){
     const pageNumbers = []//array de numeros->pag disponible
-    const arrowPage= currentPage;
+    
 
     // Recorro un array y voy a tomar un n entero que resulta de la division de todos VG con VG por pag.
     for (let i=1; i<=Math.ceil(allVideogames/videogamesPerPage); i++){ // Corregimos la condición de salida y permitimos que i llegue al valor de totalPages
@@ -32,7 +32,7 @@ export default function Paginado ({ videogamesPerPage, allVideogames, currentPag
                     <button
                         className={styles.botonPaginado}
                         onClick={((e) => prevPage(e))}
-                        disabled={currentPage === 1}>⬅</button>
+                        disabled={currentPage === 1}>⫷</button>
                 
                 </li>
                 { pageNumbers && pageNumbers.map((number) => (
@@ -49,7 +49,7 @@ export default function Paginado ({ videogamesPerPage, allVideogames, currentPag
                     <button
                         className={styles.botonPaginado}
                         onClick={next}
-                        disabled={currentPage === pageNumbers.length}>⮕</button>
+                        disabled={currentPage === pageNumbers.length}>⫸</button>
                 </li>
             </ul>
         </nav>

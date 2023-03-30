@@ -8,8 +8,6 @@ import { GET_VIDEOGAMES,
          ORDER_BY_RATING, 
          ORDER_BY_NAME, 
          VIDEOGAME_CREATED,
-         GET_VIDEOGAMES_DB,
-         GET_VIDEOGAMES_API,
         } from '../actions/action-types'
 
 
@@ -40,13 +38,6 @@ export function filteredVideogamesByGenres(payload){
 
 //ACTION QUE TRAE VIDEOGAMES SEGUN FUERON CREADOS EN BDD O DE LA API
 
-/*export const filteredByOrigin = (payload) => { //ACTION QUE TRAE VIDEOGAMES SEGUN FUERON CREADOS EN BDD O DE LA API
-  return {
-      type: FILTERED_BY_ORIGIN,
-      payload
-  }
-}*/
-
 export function filteredByOrigin(order) {
   return function (dispatch) {
     dispatch({ type: FILTERED_BY_ORIGIN, payload: order });
@@ -70,7 +61,7 @@ export  function orderByRating(payload){
       type: ORDER_BY_RATING,
       payload
   }
-}
+};
 
 
 //ACTION QUE TRAE EL VIDEOGAME BUSCADO POR NOMBRE

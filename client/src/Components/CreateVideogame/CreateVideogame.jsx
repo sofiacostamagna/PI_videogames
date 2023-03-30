@@ -8,34 +8,51 @@ import styles from './Create.module.css';
 
 
 //--------------------------------------VALIDACION---------------------------------------------------
-function validater(input){
-  let errors= {};
+function validater(input) {
+  let errors = {};
 
-  if(!input.name){// input es el estado local-> pregunto si en mi estado local.name no hay nada
-    errors.name= 'Name is required';// entonces en mi objeto .name voy a colocar q se requiere un name
+  if (!input.name) {
+    errors.name = "Name is required";
+  } else if (!/^[a-zA-Z\s]*$/.test(input.name)) { //expresion regular (solo letras y espacios)
+    errors.name = "Name should only contain letters and spaces";
+  }
+
+  if (!input.description || input.description.trim().length === 0) {
+    errors.description = "Description is required";
+  }
     
-  } else if (!input.description){
-    errors.description='Description si required';
-    
-  }else if (!input.released){
-    errors.released= 'Released date is required';
-    
-  }else if (!input.image){
-    errors.image= 'Image is required';
-    
-  }else if (!input.rating){
-    errors.rating= 'Rating is required';
-    
-  }else if (!input.platforms){
-    errors.platforms= 'Select one or more platforms';
-    
-  }else if (!input.genres){
-    errors.genres= 'Select one or more genres'
+  if (!input.released) {
+    errors.released = "Released date is required";
+  } else if (
+    !/^\d{4}-\d{2}-\d{2}$/.test(input.released) || //valida el formato de fecha y compara la fecha ingresada con la actual, para q no sea futuro
+    new Date(input.released) > new Date()
+  ) {
+    errors.released = "Invalid date format or date is in the future";
   }
   
+
+  if (!input.image) {
+    errors.image = "Image is required";
+  }
+
+  if (!input.rating) {
+    errors.rating = "Rating is required";
+  } else if (!/^\d+$/.test(input.rating) || input.rating < 0 || input.rating > 10) { //solo obtenga digitos y q el valor este en el rango de 0 a 10
+    errors.rating = "Rating should be a number between 0 and 10";
+  }
+
+  if (!input.platforms) {
+    errors.platforms = "Select one or more platforms";
+  }
+
+  if (!input.genres) {
+    errors.genres = "Select one or more genres";
+  }
+
+
   return errors;
-  
 }
+
 
 //--------------------------------------------CREATE VIDEOGAME---------------------------------------------------------
 
@@ -46,6 +63,7 @@ export default function CreateVideogame(){
   const genres = useSelector((state)=> state.genres);
   const history= useHistory() // es un metodo que te redirige a la ruta que le diga
   const [errors, setErrors]= useState({});
+
 
     const platformsArr = ["PC", "PlayStation 5", "PlayStation 4", "PlayStation 3", "Xbox One", "Xbox Series S/X", "Xbox 360", "Xbox",
     "Nintendo Switch", "Nintendo 3DS", "Nintendo DS", "Nintendo DSi", "iOS", "Android", "macOS", "Linux"]
@@ -182,15 +200,15 @@ export default function CreateVideogame(){
                     
                 {/*REALEASE DATE*/}
                 <div className={styles.itemF}>
-                    <label className={styles.labelF}>Realease Date: </label>
+                    <label className={styles.labelF}>Release Date: </label>
                      <br></br>
                     <input className={styles.inputF}
                     type='date'
-                    value={input.relDate}
+                    value={input.released}
                     name='released'
                     onChange={(e)=>handleChange(e)}
                     />
-                    {errors.relDate && (<p className={styles.error}>{errors.relDate}</p>
+                    {errors.relDate && (<p className={styles.error}>{errors.released}</p>
                     )}
                 </div>
 
@@ -276,11 +294,11 @@ export default function CreateVideogame(){
 
                   {/*BUTTON*/} 
                   <div>                       
-                 <button className={styles.botonCr} classtype='submit'>Create videogame</button>
+                 <button className={styles.botonCr} classtype='submit'>CREATE VIDEOGAME</button>
                  </div>
                  <div>
                 <Link to = '/home'>
-                  <button className={styles.botonV}>Back</button>
+                  <button className={styles.botonV}> ◄ GO BACK</button>
                   </Link>
                 </div>       
                 

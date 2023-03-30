@@ -6,6 +6,7 @@ const initialState = {
     allVideogames: [],
     genres: [],
     detail: [],
+    rating: [],
     
 };
 
@@ -24,61 +25,12 @@ function rootReducer(state = initialState, action) {
         case "FILTERED_BY_GENRES":
             return {
                  ...state, //crea una copia del estado actual 
-                videogames: state.videogames?.filter((juego) => //filtra los VG por genero
-                juego.genres?.includes(action.payload)//los que contengan el genero especificado por payload.
+                videogames: state.videogames?.filter((videogame) => //filtra los VG por genero
+                videogame.genres?.includes(action.payload)//los que contengan el genero especificado por payload.
                 ),
             }
                 
-                
-                /*case FILTERED_BY_ORIGIN:
-                const allVideogames2= state.allVideogames; //obtenemos la lista completa de todos los VG
-                //const filteredVideogames= allVideogames2.filter((el)=> el === 'DB' ? el.createInDb : !el.createInDb);
-                const filteredVideogames = action.payload ==='DB' ? allVideogames2.filter((el)=> el.createInDb) :
-                allVideogames2.filter((el)=> !el.createInDb)
-                //comprobamos si el valaro de action.payload es created o no
-                console.log(filteredVideogames)
-                return{
-                    ...state,
-                    videogames: action.payload === 'all' ? state.allVideogames2 : filteredVideogames// actualiza el estado
-                }*/
-                
-                /*case FILTERED_BY_ORIGIN:
-                const allVideogames2 = state.allVideogames;
-                const filteredVideogames = action.payload === 'DB' 
-                ? allVideogames2.filter((el) => el.createInDb === true) 
-                : allVideogames2.filter((el) => el.createInDb === false);
-                return {
-                    ...state,
-                    videogames: action.payload === 'all' ? state.allVideogames : filteredVideogames
-                }*/
-                
-        /*case "FILTERED_BY_ORIGIN":
-            const allVideogames1 = state.allVideogames;
-            const filteredVideogames = allVideogames1.filter((el) => action.payload === 'created' ? el.createInDb : !el.createInDb);
-                return {
-                    ...state,
-                    allVideogames: filteredVideogames
-                };*/
-                    
-                    /*case FILTERED_BY_ORIGIN:
-                    const allVideogames = state.allVideogames;    
-                    const orderCreate = 
-                    action.payload === 'created' 
-                    ? state.allVideogames.filter((el) => el.createdInDb) 
-                    : state.allVideogames.filter((el) => !el.createdInDb)
-                    return{
-                        ...state,
-                        videogames: action.payload === 'all' ? allVideogames : orderCreate
-                    }*/
 
-        /*case "FILTERED_BY_ORIGIN":
-            const allVideogames2 = state.allVideogames;
-            const originFilter = action.payload === 'database' ?  allVideogames2.filter((element) => element.createInDb) : allVideogames2.filter((element) => !element.createInDb)
-            console.log(action.payload)
-                return {
-                     ...state,
-                    videogames: action.payload === 'all' ? state.allVideogames : originFilter
-                }*/
 
         case "FILTERED_BY_ORIGIN":
             if (action.payload === 'default'){
@@ -122,18 +74,16 @@ function rootReducer(state = initialState, action) {
                     videogames:action.payload
                 }
                             
-        case "ORDER_BY_RATING":
-            let orderAsc = state.allVideogames.slice().sort((a,b)=>{ //creamos una copia del VG original-> 
-                //ordena segun rating->se espera q sea un N
-                if (Number(a.rating) > Number(b.rating)) return 1;//si es mayor
-                if (Number(b.rating) > Number (a.rating)) return -1;//si es menor
-                return 0//si son iguales
+        case 'ORDER_BY_RATING':
+            let orderAsc = state.videogames.slice().sort((a,b) =>{
+                if (Number(a.rating) > Number(b.rating)) return 1;
+                if (Number(b.rating) > Number(a.rating)) return -1;
+                return 0
             })
-                return{
+            return{
                     ...state,
-                     videogames: action.payload === 'desc' ? orderAsc : orderAsc.reverse()
-                } //si payload es = desc ->devuelve una copia ordenada de los obj de VG
-                //si payload es = asc -> copia ordenada en reversa
+                    videogames: action.payload === 'desc' ? orderAsc : orderAsc.reverse()
+                    }
                                 
         case "GET_GENRES":
                 return {
